@@ -24,9 +24,9 @@ function App() {
     setTask("");
 }
 
-  function handleDeleteTask(indexToDelete) {
+  function handleDeleteTask(id) {
     const updatedTasks = tasks.filter(
-        (_, index) => index !== indexToDelete
+        (task) => task.id !== id
     );
 
     setTasks(updatedTasks);
@@ -53,6 +53,10 @@ function handleFilterChange(e) {
 }
 
 let filteredTasks;
+let completedCount = 0;
+let pendingCount = 0;
+
+
 
 if (filter === "Pending") {
     filteredTasks = tasks.filter(
@@ -66,6 +70,25 @@ else if (filter === "Completed") {
 }
 else {
     filteredTasks = tasks;
+}
+
+tasks.forEach(task => {
+    if (task.completed)
+        completedCount++;
+    else
+        pendingCount++;
+});
+
+function handleClearCompleted() {
+    const updatedTasks = tasks.filter(
+        task => !task.completed
+    );
+
+    setTasks(updatedTasks);
+}
+
+function handlePrint() {
+    window.print();
 }
 
   return (
@@ -114,7 +137,7 @@ else {
 
       <div className="task-list">
 
-      {filteredTasks.map((item, index) => (
+      {   filteredTasks.length > 0 ?(filteredTasks.map((item, index) => (
         
            <div className="task-item" key={item.id}>
 
@@ -125,24 +148,32 @@ else {
                                  {item.text}
           </span>
 
-               <button onClick={() => handleDeleteTask(index)}>
+               <button onClick={() => handleDeleteTask(item.id)}>
                    🗑
               </button>
 
             </div>
 
-      ))}
+      )) ) : <p>
+    {filter === "All"
+        ? "There are no tasks."
+        : `No ${filter.toLowerCase()} tasks found.`}
+</p>}
 
       </div>
 
       <div className="footer">
-        <button>♻</button>
+        <button onClick={handleClearCompleted}>
+    ♻
+      </button>
 
         <p>
-          <span>0 completed</span> • <span>2 pending</span>
+          <span>{completedCount} completed</span> • <span>{pendingCount} pending</span>
         </p>
 
-        <button>🖨</button>
+        <button onClick={handlePrint}>
+    🖨
+         </button>
       </div>
 
     </div>
