@@ -49,6 +49,12 @@ body {
     background: none;
     font-size: 18px;
     cursor: pointer;
+    
+}
+
+.filters button.active {
+    color: royalblue;
+    border-bottom: 3px solid royalblue;
 }
 
 .task-list {

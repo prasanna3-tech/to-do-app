@@ -5,6 +5,7 @@ function App() {
 
   const [task, setTask] = useState("");
   const [tasks, setTasks] = useState([]);
+  const [filter, setFilter] = useState("All");
 
   function handleAddTask() {
 
@@ -47,6 +48,26 @@ function handleToggleTask(id) {
     setTasks(updatedTasks);
 }
 
+function handleFilterChange(e) {
+    setFilter(e.target.value);
+}
+
+let filteredTasks;
+
+if (filter === "Pending") {
+    filteredTasks = tasks.filter(
+        task => !task.completed
+    );
+}
+else if (filter === "Completed") {
+    filteredTasks = tasks.filter(
+        task => task.completed
+    );
+}
+else {
+    filteredTasks = tasks;
+}
+
   return (
     <div className="app">
 
@@ -66,14 +87,34 @@ function handleToggleTask(id) {
       </div>
 
       <div className="filters">
-        <button>All</button>
-        <button>Pending</button>
-        <button>Completed</button>
+
+       <button
+        value="All"
+        className={filter === "All" ? "active" : ""}
+         onClick={handleFilterChange} >
+            All
+      </button>
+
+<button
+    value="Pending"
+     className={filter === "Pending" ? "active" : ""}
+    onClick={handleFilterChange}
+>
+    Pending
+</button>
+
+<button
+    value="Completed"
+     className={filter === "Completed" ? "active" : ""}
+    onClick={handleFilterChange}
+>
+    Completed
+</button>
       </div>
 
       <div className="task-list">
 
-      {tasks.map((item, index) => (
+      {filteredTasks.map((item, index) => (
         
            <div className="task-item" key={item.id}>
 
@@ -82,7 +123,7 @@ function handleToggleTask(id) {
                 <span
                      style={{ textDecoration: item.completed ? "line-through" : "none" }} >
                                  {item.text}
-                </span>
+          </span>
 
                <button onClick={() => handleDeleteTask(index)}>
                    🗑
