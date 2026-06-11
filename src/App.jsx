@@ -77,9 +77,12 @@ function handleToggleTask(id) {
         
            <div className="task-item" key={item.id}>
 
-                 <input type="checkbox" onChange={()=>handleToggleTask(item.id)} />
+                 <input type="checkbox" checked={item.completed} onChange={()=>handleToggleTask(item.id)} />
 
-                 <span>{item.text}</span>
+                <span
+                     style={{ textDecoration: item.completed ? "line-through" : "none" }} >
+                                 {item.text}
+                </span>
 
                <button onClick={() => handleDeleteTask(index)}>
                    🗑
