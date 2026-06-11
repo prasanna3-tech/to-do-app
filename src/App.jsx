@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useState , useEffect} from "react";
 
 function App() {
 
@@ -90,6 +90,33 @@ function handleClearCompleted() {
 function handlePrint() {
     window.print();
 }
+
+useEffect(() => {
+
+      console.log("Loading...");
+
+    const savedTasks = localStorage.getItem("tasks");
+
+    console.log(savedTasks);
+
+    if (savedTasks) {
+        setTasks(JSON.parse(savedTasks));
+    } 
+
+}, []);
+
+useEffect(() => {
+
+    console.log("Saving...", tasks);
+
+    localStorage.setItem(
+        "tasks",
+        JSON.stringify(tasks)
+    );
+
+}, [tasks]);
+
+
 
   return (
     <div className="app">
